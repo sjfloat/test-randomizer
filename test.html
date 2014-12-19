@@ -74,7 +74,7 @@ function WriteTest() {
         for (j=0; j < tst.choices[i].length; j++) {
             
             var correctcount = 0;
-            var setblue = "";
+            var choiceClass = "";
             
             for (k=0; k<tst.answers[i].length; k++) {
                 if (tst.answers[i][k] == 1) {
@@ -83,17 +83,17 @@ function WriteTest() {
             }
             
             if (tst.answers[i][j] == 1) {
-                setblue="class=blue"
+                choiceClass="class=correct"
             }
             
             if (correctcount == 1) {
                 document.write("<br><input type=radio name=check"+i+" value="+j+" onclick='return false;'>");
-                document.write("<span "+setblue+">"+tst.choices[i][j]+"</span>");
+                document.write("<span "+choiceClass+">"+tst.choices[i][j]+"</span>");
             } 
             
             else {
                 document.write("<br><input type=checkbox name=check"+i+" value="+j+" onclick='return false;'>");
-                document.write("<span "+setblue+">"+tst.choices[i][j]+"</span>");
+                document.write("<span "+choiceClass+">"+tst.choices[i][j]+"</span>");
             }
         }
         
@@ -162,7 +162,7 @@ function CreateSampleTest(){
 
 </script>
 <style type="text/css">
-.blue {font-size : 14px; font-family : arial, helvetica, sans-serif; color : #336897; font-weight:bold;}
+.correct {font-size : 14px; font-family : arial, helvetica, sans-serif; color : #336897; font-weight:bold;}
 </style>
 </head>
 <body>
