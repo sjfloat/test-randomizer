@@ -32,9 +32,29 @@ The order of the choices within each question should also be randomized.
 */
 function RandomizeTest(tstObject){
     
-    
-    
+    for (i=0; i < tstObject.questions.length; i++) {
+        var question = tstObject.questions[i]
+        randomizeArray(tstObject.questions[i].choices);
+    }
+
+    randomizeArray(tstObject.questions);
+
+    // return value extraneous...
     return tstObject;
+}
+
+function randomizeArray(arry) {
+
+    var i = arry.length;
+    while (0 != i) {
+        var rand = Math.floor(Math.random() * i);
+        i-=1;
+
+        var tmp    = arry[i];
+        arry[i]    = arry[rand];
+        arry[rand] = tmp;
+    }
+    return arry;
 }
 
 
