@@ -44,10 +44,8 @@ function RandomizeTest(tstObject){
 
 
 //definition of the test object
-function Test(aryQuestions, aryChoices, aryAnswers){
-    this.questions = aryQuestions;
-    this.choices = aryChoices;
-    this.answers = aryAnswers;
+function Test(questions){
+    this.questions = questions;
 }
 
 
@@ -63,33 +61,36 @@ function WriteTest() {
     
     for (i=0; i < tst.questions.length; i++) {
     
+        var question = tst.questions[i]
+
         document.write("<tr><td valign=top>&nbsp;</td>")
 
-        document.write("<td><p>" + (i+1) + ".&nbsp;" + tst.questions[i]);
+        document.write("<td><p>" + (i+1) + ".&nbsp;" + question.text);
         
-        for (j=0; j < tst.choices[i].length; j++) {
+        var correctcount = 0;
+        for (j=0; j < question.choices.length; j++) {
+            if (question.choices[j].correct) {
+                correctcount++;
+            }
+        }
+
+        for (j=0; j < question.choices.length; j++) {
+            var choice = question.choices[j];
             
-            var correctcount = 0;
             var choiceClass = "";
             
-            for (k=0; k<tst.answers[i].length; k++) {
-                if (tst.answers[i][k] == 1) {
-                    correctcount++;
-                }
-            }
-            
-            if (tst.answers[i][j] == 1) {
+            if (choice.correct) {
                 choiceClass="class=correct"
             }
             
             if (correctcount == 1) {
                 document.write("<br><input type=radio name=check"+i+" value="+j+" onclick='return false;'>");
-                document.write("<span "+choiceClass+">"+tst.choices[i][j]+"</span>");
+                document.write("<span "+choiceClass+">"+choice.answer+"</span>");
             } 
             
             else {
                 document.write("<br><input type=checkbox name=check"+i+" value="+j+" onclick='return false;'>");
-                document.write("<span "+choiceClass+">"+tst.choices[i][j]+"</span>");
+                document.write("<span "+choiceClass+">"+choice.answer+"</span>");
             }
         }
         
@@ -101,56 +102,55 @@ function WriteTest() {
 
 
 function CreateSampleTest(){
-
+    // TODO externalize this
     var questions = [
-        "What can you find in Rustici Software's office?",
-        "All of Rustici Software employees are expected to work no more than ____ hours per week.",
-        "The end users of Rustici Software's products number in the _________",
-        "Rustici Software is a (choose all that apply):",
-        "Tim likes to wear:"
+        {
+            text: "What can you find in Rustici Software's office?",
+            choices: [
+                { answer: "Dart Board",                 correct: true },
+                { answer: "Ping Pong Table",            correct: true },
+                { answer: "Cubicles",                   correct: false },
+                { answer: "Laptops with dual monitors", correct: true },
+                { answer: "TPS reports, ummm yeah",     correct: false }
+            ]
+        },
+        {
+            text: "All of Rustici Software employees are expected to work no more than ____ hours per week.",
+            choices: [
+                { answer: "80", correct: false },
+                { answer: "40", correct: true },
+                { answer: "50", correct: false },
+                { answer: "60", correct: false }
+            ]
+        },
+        {
+            text: "The end users of Rustici Software's products number in the _________",
+            choices: [
+                { answer: "Tens",      correct: false },
+                { answer: "Hundreds",  correct: false },
+                { answer: "Thousands", correct: false },
+                { answer: "Millions",  correct: true },
+                { answer: "Billions",  correct: false }
+            ]
+        },
+        {
+            text: "Rustici Software is a (choose all that apply):",
+            choices: [
+                { answer: "Great place to work",                           correct: true },
+                { answer: "Respected leader in its field",                 correct: true },
+                { answer: "Place where people don't matter, just results", correct: false }
+            ]
+        },
+        {
+            text: "Tim likes to wear:",
+            choices: [
+                { answer: "Capri pants",        correct: false },
+                { answer: "Goth attire",        correct: false },
+                { answer: "Sport coat",         correct: false },
+                { answer: "T-shirt and shorts", correct: true }
+            ]
+        }
     ];
 
-    var choices = [
-        [
-            "Dart Board",
-            "Ping Pong Table",
-            "Cubicles",
-            "Laptops with dual monitors",
-            "TPS reports, ummm yeah"
-        ],
-        [
-            "80",
-            "40",
-            "50",
-            "60"
-        ],
-        [
-            "Tens",
-            "Hundreds",
-            "Thousands",
-            "Millions",
-            "Billions"
-        ],
-        [
-            "Great place to work",
-            "Respected leader in its field",
-            "Place where people don't matter, just results"
-        ],
-        [
-            "Capri pants",
-            "Goth attire",
-            "Sport coat",
-            "T-shirt and shorts"
-        ]
-    ];
-
-    var answers = [
-        [1,1,0,1,0],
-        [0,1,0,0],
-        [0,0,0,1,0],
-        [1,1,0],
-        [0,0,0,1,0]
-    ];  
-    
-    return new Test(questions, choices, answers);
+    return new Test(questions);
 }
